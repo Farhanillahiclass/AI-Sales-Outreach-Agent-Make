@@ -6,14 +6,17 @@ An advanced, production-ready AI Automation workflow built on **Make.com** using
 
 ## 🚀 Features
 
-* 📩 **Automated Lead Ingestion:** Continuously watches your Gmail inbox for new unread messages.
-* 🔍 **Deep Company Research:** Automatically extracts the sender's domain and uses AI Web Search to gather company size, industry, and potential pain points.
+* 📧 **Automated Lead Ingestion:** Continuously watches your Gmail inbox for new unread messages.
+* 🔍 **Deep Company Research:** Automatically extracts the sender's domain and uses AI Web Search to gather company Size, industry, and potential pain points.
 * 📊 **Lead Scoring & Qualification:** Categorizes leads into **HIGH, MEDIUM, or LOW** priority based on custom objective frameworks.
 * 📅 **Smart Calendar Sync:** Checks your Google Calendar for free slots and automatically proposes 2-3 specific meeting times if the lead is highly qualified.
 * ✍️ **Ghostwritten Drafts:** Creates beautifully formatted HTML email replies directly inside your Gmail Drafts folder.
 * 💬 **Team Collaboration:** Sends instant notifications to your Slack workspace when a high-quality lead is processed.
 
 ---
+
+## 👤 Author
+Developed with ❤️ by **Farhan**.
 
 ## 🛠️ Tech Stack & Tools Used
 
@@ -33,7 +36,7 @@ An advanced, production-ready AI Automation workflow built on **Make.com** using
 2. API Access / Connections for Gmail, Google Calendar, and Slack.
 
 ### Setup Steps
-1. Download the `blueprint.json` file from this repository.
+1. Download the `sales_outreach_agent_blueprint.json` file from this repository.
 2. Go to your **Make.com** dashboard and click **Create a new scenario**.
 3. Click the three dots `...` (More) menu at the bottom and select **Import Blueprint**. Upload the downloaded `.json` file.
 4. Update the connections for each module:

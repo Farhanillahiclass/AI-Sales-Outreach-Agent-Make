@@ -1,0 +1,7 @@
+# Make.com Blueprints
+*.blueprint
+*.json
+
+# OS files
+.DS_Store
+Thumbs.db

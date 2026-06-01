@@ -1,0 +1,1547 @@
+{
+    "name": "Sales Outreach Agent",
+    "flow": [
+        {
+            "id": 1,
+            "module": "google-email:triggerWatchNewEmails",
+            "version": 4,
+            "parameters": {
+                "from": "",
+                "size": {
+                    "unit": "M",
+                    "amount": null,
+                    "criteria": "larger"
+                },
+                "limit": 5,
+                "folder": "INBOX",
+                "format": "full",
+                "subject": "",
+                "criteria": "all",
+                "labelIds": "Label_2223541488245979988",
+                "markSeen": false,
+                "filterType": "simpleSearch",
+                "__IMTCONN__": 7801086,
+                "excludeWords": "",
+                "includeWords": "",
+                "hasAttachment": false
+            },
+            "mapper": {},
+            "metadata": {
+                "designer": {
+                    "x": 0,
+                    "y": 0
+                },
+                "restore": {
+                    "parameters": {
+                        "size": {
+                            "nested": {
+                                "unit": {
+                                    "label": "MB (megabytes)"
+                                },
+                                "criteria": {
+                                    "label": "Greater than"
+                                }
+                            }
+                        },
+                        "folder": {
+                            "label": "Inbox"
+                        },
+                        "format": {
+                            "label": "Full content"
+                        },
+                        "criteria": {
+                            "label": "All messages"
+                        },
+                        "labelIds": {
+                            "label": "Leads"
+                        },
+                        "filterType": {
+                            "label": "Simple filter"
+                        },
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "google-email"
+                            },
+                            "label": "My Gmail connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:google-email",
+                        "label": "Connection",
+                        "required": true
+                    },
+                    {
+                        "name": "filterType",
+                        "type": "select",
+                        "label": "Filter type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "simpleSearch",
+                                "gmailSearch"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "format",
+                        "type": "select",
+                        "label": "Content format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "full",
+                                "raw",
+                                "metadata",
+                                "minimal"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "folder",
+                        "type": "select",
+                        "label": "Folder",
+                        "required": true
+                    },
+                    {
+                        "name": "labelIds",
+                        "type": "select",
+                        "label": "Label"
+                    },
+                    {
+                        "name": "criteria",
+                        "type": "select",
+                        "label": "Criteria",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "all",
+                                "is:read",
+                                "is:unread"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "markSeen",
+                        "type": "boolean",
+                        "label": "Mark email message(s) as read when fetched"
+                    },
+                    {
+                        "name": "limit",
+                        "type": "uinteger",
+                        "label": "Limit",
+                        "required": true,
+                        "validate": {
+                            "max": 500
+                        }
+                    },
+                    {
+                        "name": "from",
+                        "type": "email",
+                        "label": "Sender email address"
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text",
+                        "label": "Subject"
+                    },
+                    {
+                        "name": "includeWords",
+                        "type": "text",
+                        "label": "Has the words"
+                    },
+                    {
+                        "name": "excludeWords",
+                        "type": "text",
+                        "label": "Doesn't have"
+                    },
+                    {
+                        "name": "size",
+                        "spec": [
+                            {
+                                "name": "criteria",
+                                "type": "select",
+                                "label": "Criteria",
+                                "validate": {
+                                    "enum": [
+                                        "larger",
+                                        "smaller"
+                                    ]
+                                }
+                            },
+                            {
+                                "name": "amount",
+                                "type": "integer",
+                                "label": "Size",
+                                "validate": {
+                                    "min": 0
+                                }
+                            },
+                            {
+                                "name": "unit",
+                                "type": "select",
+                                "label": "Size unit",
+                                "validate": {
+                                    "enum": [
+                                        "M",
+                                        "K",
+                                        "bytes"
+                                    ]
+                                }
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Email size"
+                    },
+                    {
+                        "name": "hasAttachment",
+                        "type": "boolean",
+                        "label": "Only emails with attachments/media",
+                        "required": true
+                    }
+                ],
+                "interface": [
+                    {
+                        "name": "id",
+                        "type": "text",
+                        "label": "Message ID"
+                    },
+                    {
+                        "name": "threadId",
+                        "type": "text",
+                        "label": "Thread ID"
+                    },
+                    {
+                        "name": "internalDate",
+                        "type": "date",
+                        "label": "Date"
+                    },
+                    {
+                        "name": "subject",
+                        "type": "text",
+                        "label": "Subject",
+                        "condition": true
+                    },
+                    {
+                        "name": "fromName",
+                        "type": "text",
+                        "label": "From (name)",
+                        "condition": true
+                    },
+                    {
+                        "name": "fromEmail",
+                        "type": "text",
+                        "label": "From (email)",
+                        "condition": true
+                    },
+                    {
+                        "name": "to",
+                        "spec": {
+                            "spec": [
+                                {
+                                    "name": "name",
+                                    "type": "text",
+                                    "label": "Name"
+                                },
+                                {
+                                    "name": "email",
+                                    "type": "text",
+                                    "label": "Email"
+                                }
+                            ],
+                            "type": "collection"
+                        },
+                        "type": "array",
+                        "label": "To",
+                        "condition": true
+                    },
+                    {
+                        "name": "cc",
+                        "spec": [
+                            {
+                                "name": "email",
+                                "type": "email",
+                                "label": "Email"
+                            },
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "CC",
+                        "condition": true
+                    },
+                    {
+                        "name": "bcc",
+                        "spec": [
+                            {
+                                "name": "email",
+                                "type": "email",
+                                "label": "Email"
+                            },
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "BCC",
+                        "condition": true
+                    },
+                    {
+                        "name": "snippet",
+                        "type": "text",
+                        "label": "Snippet"
+                    },
+                    {
+                        "name": "fullTextBody",
+                        "type": "text",
+                        "label": "Full text body",
+                        "condition": true
+                    },
+                    {
+                        "name": "htmlBody",
+                        "type": "text",
+                        "label": "HTML body",
+                        "condition": true
+                    },
+                    {
+                        "name": "hasAttachment",
+                        "type": "boolean",
+                        "label": "Has attachment",
+                        "condition": true
+                    },
+                    {
+                        "name": "hasMedia",
+                        "type": "boolean",
+                        "label": "Has media",
+                        "condition": true
+                    },
+                    {
+                        "name": "sysFolders",
+                        "spec": [
+                            {
+                                "name": "id",
+                                "type": "text",
+                                "label": "System folder ID"
+                            },
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "System folder name"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "System folders"
+                    },
+                    {
+                        "name": "categoryFolders",
+                        "spec": [
+                            {
+                                "name": "id",
+                                "type": "text",
+                                "label": "Category folder ID"
+                            },
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Category folder name"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Category folders"
+                    },
+                    {
+                        "name": "userLabelFolders",
+                        "spec": [
+                            {
+                                "name": "id",
+                                "type": "text",
+                                "label": "User label folder ID"
+                            },
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "User label folder name"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "User label folders"
+                    },
+                    {
+                        "name": "labelIds",
+                        "spec": {
+                            "type": "text"
+                        },
+                        "type": "array",
+                        "label": "Message folder IDs"
+                    },
+                    {
+                        "name": "headers",
+                        "spec": [
+                            {
+                                "name": "Delivered-To",
+                                "type": "text",
+                                "label": "Delivered-To"
+                            },
+                            {
+                                "name": "Received",
+                                "type": "text",
+                                "label": "Received"
+                            },
+                            {
+                                "name": "Date",
+                                "type": "text",
+                                "label": "Date (header)"
+                            },
+                            {
+                                "name": "X-Original-Sender",
+                                "type": "text"
+                            },
+                            {
+                                "name": "Reply-To",
+                                "type": "text"
+                            },
+                            {
+                                "name": "Subject",
+                                "type": "text",
+                                "label": "Subject"
+                            },
+                            {
+                                "name": "From",
+                                "type": "text",
+                                "label": "From"
+                            },
+                            {
+                                "name": "To",
+                                "type": "text",
+                                "label": "To"
+                            },
+                            {
+                                "name": "Message-ID",
+                                "type": "text",
+                                "label": "Message-ID"
+                            },
+                            {
+                                "name": "In-Reply-To",
+                                "type": "text",
+                                "label": "In-Reply-To"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Headers",
+                        "condition": true
+                    },
+                    {
+                        "name": "sizeEstimate",
+                        "type": "number",
+                        "label": "Size estimate"
+                    },
+                    {
+                        "name": "historyId",
+                        "type": "text",
+                        "label": "History ID"
+                    }
+                ]
+            }
+        },
+        {
+            "id": 2,
+            "module": "ai-local-agent:RunLocalAIAgent",
+            "version": 0,
+            "parameters": {
+                "makeConnectionId": 7800994
+            },
+            "mapper": {
+                "files": [],
+                "message": "sender_email: \"{{1.fromEmail}}\"\nsender_name: \"{{1.fromName}}\"\nemail_subject: \"{{1.subject}}\"\nemail_date: \"{{1.internalDate}}\"\nemail_body: \"{{1.fullTextBody}}\"\nthread_id: \"{{1.threadId}}\"",
+                "timeout": "",
+                "threadId": "",
+                "outputType": "make-schema",
+                "modelConfig": {
+                    "recursionLimit": "300",
+                    "iterationsFromHistoryCount": "10"
+                },
+                "defaultModel": "gpt-5.4",
+                "outputSchema": [
+                    {
+                        "help": "After creating the draft mail, you'll get back a JSON like:\n```\n{\n        \"draftId\": \"r7956931764211347721\",\n        \"id\": \"19b46f571debca3f\",\n        \"threadId\": \"19b46f571debca3f\",\n        \"labelIds\": [\n            \"DRAFT\"\n        ],\n        \"sysFolders\": [\n            {\n                \"id\": \"DRAFT\",\n                \"name\": \"Draft\"\n            }\n        ]\n    }\n```\n\nPass here the \"id\" item of the JSON. In the example is \"19b46f571debca3f\"",
+                        "name": "draft_mail_id",
+                        "type": "text",
+                        "label": "Mail ID",
+                        "default": "",
+                        "required": false,
+                        "multiline": false
+                    }
+                ],
+                "systemPrompt": "You are a Lead Qualification Agent that autonomously processes inbound leads, researches companies, and drafts personalized responses with meeting proposals when appropriate.\n\nINPUT FORMAT\n\nYou will receive:\n- sender_email: Email address of the lead \n- sender_name: Name of the person who sent the email\n- email_subject: Subject line of the email \n- email_body: Content of the email\n- thread_id: Gmail thread ID for threading\n\nAVAILABLE TOOLS\nResearch Tools:\n- Research Lead information - Research companies and gather intelligence\n\nMeeting Tools:\n- Get Free/Busy information - Get user availability for next 7 days\n\nEmail Tools:\n- Create email draft - Create Gmail draft response\n  Input: To, Subject, Body (MUST BE HTML FORMAT)\n  CRITICAL: This tool must ALWAYS be called LAST in your workflow\n\nCONTEXT\nYou should always access your context to retrieve the knowledge of the kind of company we are and services we offer\n\nYOUR WORKFLOW\n\nSTEP 1: EXTRACT COMPANY DOMAIN\n- Extract the domain from sender_email (everything after @)\n- Identify the company name from the domain\n- Extract sender name and relevant context from email_body\n\nSTEP 2: RESEARCH THE COMPANY (MANDATORY)\n- Call research_lead_information with the company domain\n- Gather information about:\n  - Industry and sector\n  - Company size (estimated employees/revenue if available)\n  - Products or services offered\n  - Recent news, funding, or announcements\n  - Potential pain points or business challenges\n  - Technology stack or tools they use (if discoverable)\n\nSTEP 3: QUALIFY THE LEAD\nAnalyze the gathered information and assign a qualification score:\n\nHIGH - If 3 or more apply:\n- Company in target industry\n- Significant company size or budget indicators\n- Recent funding or growth signals\n- Clear pain point matching your solution\n- Specific inquiry or clear intent in email\n\nMEDIUM - If 2 apply:\n- Relevant industry but unclear fit\n- Some budget indicators\n- General inquiry without specifics\n- Limited information available\n\nLOW - If most apply:\n- Outside target industry\n- Very small company or individual\n- Generic or spam-like inquiry\n- No clear pain points\n- Minimal information available\n\nSTEP 4: MEETING WORTHINESS ASSESSMENT \n\nBefore proceeding, you must evaluate whether this lead warrants a meeting proposal. Consider:\n\nPROPOSE A MEETING IF:\n- Qualification score is HIGH AND\n- Clear business opportunity exists (budget signals, specific need, decision-maker contact) AND\n- The inquiry is specific and actionable (not just information gathering) AND\n- There is explicit or implicit request for discussion/demo/call in the email AND\n- Timeline indicators suggest near-term decision making\n\nDO NOT PROPOSE A MEETING IF:\n- Qualification score is LOW\n- Generic inquiry with no specific needs mentioned\n- Information-only request that can be handled via email\n- Student, academic, or research inquiry with no commercial intent\n- Sender appears to be in early exploration phase with no clear timeline\n- Red flags present (competitor research, spam patterns, unclear legitimacy)\n- MEDIUM qualification without strong engagement signals\n\nMEETING DECISION FRAMEWORK:\nAsk yourself: \"Would I personally want to spend 30 minutes on this call based on the information available?\"\n\nIf YES: Proceed to get availability (Step 5)\nIf NO: Skip to Step 6 (no meeting proposal)\n\nSTEP 5: GET CALENDAR AVAILABILITY (ONLY IF STEP 4 DETERMINED MEETING IS WARRANTED)\n\nStep 5A: Get Calendar Availability\n- Call get_freebusy_information to retrieve available time slots for next 7 days\n- Analyze the returned availability data\n- Identify 2-3 available 30-minute slots within business hours (10 AM - 5 PM Berlin timezone)\n- Prefer slots in the next 3-5 business days\n- Avoid early morning (before 10 AM) or late afternoon (after 4:30 PM) slots\n\nSTEP 6: DRAFT PERSONALIZED EMAIL RESPONSE\n\nPrepare a personalized email response that:\n- Acknowledges their specific inquiry or context from email_body\n- References specific company research (shows you did homework)\n- Addresses potential pain points discovered\n- Provides relevant value proposition\n- Includes clear call-to-action\n- Professional but warm tone\n- around 250 words\n\nEmail structure:\n- Greeting with name\n- Thank them and acknowledge their specific inquiry\n- 1-2 sentences showing company knowledge\n- Brief value proposition relevant to their needs\n- Clear next step or call-to-action\n- Professional signature\n\nIF MEETING SHOULD BE PROPOSED (based on Step 4 and 5):\n- Propose 2-3 specific available time slots from the calendar availability\n- Format: \"I have availability on [Day, Date] at [Time] or [Day, Date] at [Time]. Would either of these work for you?\"\n- Frame it as a helpful suggestion for discussion\n- Keep tone flexible and accommodating\n\nIF NO MEETING SHOULD BE PROPOSED:\n- Provide helpful information or resources\n- Offer to schedule a call if they want to discuss further\n- Keep door open for future engagement\n\nSTEP 7: CREATE EMAIL DRAFT\n- Call create_email_draft with:\n  - To: sender_email\n  - Subject: Re: [original email_subject]\n  - Body: Your drafted response in HTML format (including meeting time proposals if warranted)\n\nCRITICAL: create_email_draft must be called for EVERY lead\n\nHTML EMAIL FORMATTING REQUIREMENTS\n\nWhen creating email drafts, format the body content in HTML with proper structure:\n\nBasic structure:\n<html>\n<body style=\"font-family: Arial, sans-serif; font-size: 14px; color: #333333; line-height: 1.6;\">\n\n<p>Hi [Name],</p>\n\n<p>[First paragraph content]</p>\n\n<p>[Second paragraph content]</p>\n\n<p>[Closing paragraph with call-to-action]</p>\n\n<p>Best regards,<br>\n[Your name]<br>\n[Your title]</p>\n\n</body>\n</html>\n\nHTML formatting guidelines:\n- Wrap all content in <html> and <body> tags\n- Use inline CSS for styling (font-family, font-size, color, line-height)\n- Use <p> tags for paragraphs with proper spacing\n- Use <br> for line breaks within paragraphs\n- Use <strong> for emphasis if needed\n- Keep styling professional and clean\n- Ensure proper closing tags for all elements\n\nIMPORTANT NOTES\n\n- This is a fully autonomous workflow - execute all steps without any user interaction\n- ALWAYS research the company before making any decisions\n- Apply critical thinking in Step 4 - not every lead deserves a meeting proposal\n- Base all decisions on objective criteria and available information\n- Keep email drafts personalized - avoid generic templates\n- When proposing meeting times, provide 2-3 specific options from available slots\n- Format meeting time proposals clearly with day, date, and time\n- CRITICAL: Email body content MUST always be in HTML format\n- CRITICAL: create_email_draft must ALWAYS be called for every lead\n- Reference specific details from the original email in your response draft\n- Work completely autonomously - no confirmations or user interactions needed",
+                "reasoningEffort": "medium"
+            },
+            "metadata": {
+                "designer": {
+                    "x": 300,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "files": {
+                            "mode": "chose"
+                        },
+                        "outputType": {
+                            "label": "Data structure"
+                        },
+                        "defaultModel": {
+                            "mode": "chose",
+                            "label": "GPT-5.4The frontier model for broad, general-purpose work and coding, delivering higher-quality outputs for complex tasks"
+                        },
+                        "outputSchema": {
+                            "items": [
+                                null
+                            ]
+                        },
+                        "reasoningEffort": {
+                            "mode": "chose",
+                            "label": "Medium"
+                        }
+                    },
+                    "parameters": {
+                        "makeConnectionId": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "ai-provider"
+                            },
+                            "label": "My Make's AI Provider connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "makeConnectionId",
+                        "type": "account:ai-provider,openai-gpt-3,anthropic-claude,gemini-ai-q9zyjp,ai-agent-foundry-openai,ai-agent-foundry-non-openai,mistral-ai,cohere,groq,ai-agent-xai,amazon-bedrock,ai-agent-openai-compatible",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "defaultModel",
+                        "type": "select",
+                        "label": "Model",
+                        "required": true
+                    },
+                    {
+                        "name": "reasoningEffort",
+                        "type": "select",
+                        "label": "Reasoning effort",
+                        "validate": {
+                            "enum": [
+                                "none",
+                                "low",
+                                "medium",
+                                "high"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "systemPrompt",
+                        "type": "text",
+                        "label": "Instructions"
+                    },
+                    {
+                        "name": "message",
+                        "type": "text",
+                        "label": "Input",
+                        "required": true
+                    },
+                    {
+                        "name": "files",
+                        "spec": [
+                            {
+                                "name": "fileName",
+                                "type": "filename",
+                                "label": "File name",
+                                "semantic": "file:name"
+                            },
+                            {
+                                "name": "data",
+                                "type": "buffer",
+                                "label": "Data",
+                                "semantic": "file:data"
+                            }
+                        ],
+                        "type": "array",
+                        "label": "Input files"
+                    },
+                    {
+                        "name": "threadId",
+                        "type": "text",
+                        "label": "Conversation ID"
+                    },
+                    {
+                        "name": "modelConfig",
+                        "spec": [
+                            {
+                                "name": "tokenLimit",
+                                "type": "hidden",
+                                "label": "Max output tokens"
+                            },
+                            {
+                                "name": "recursionLimit",
+                                "type": "hidden",
+                                "label": "Steps per agent call"
+                            },
+                            {
+                                "name": "iterationsFromHistoryCount",
+                                "type": "number",
+                                "label": "Maximum conversation history"
+                            }
+                        ],
+                        "type": "collection",
+                        "label": "Model configuration"
+                    },
+                    {
+                        "name": "timeout",
+                        "type": "number",
+                        "label": "Step timeout",
+                        "validate": {
+                            "max": 600,
+                            "min": 120
+                        }
+                    },
+                    {
+                        "name": "outputType",
+                        "type": "select",
+                        "label": "Response format",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "text",
+                                "make-schema",
+                                "udt-schema"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "outputSchema",
+                        "spec": [
+                            {
+                                "name": "name",
+                                "type": "text",
+                                "label": "Name",
+                                "required": true,
+                                "placeholder": "Enter name"
+                            },
+                            {
+                                "name": "label",
+                                "type": "text",
+                                "label": "Label"
+                            },
+                            {
+                                "name": "help",
+                                "type": "text",
+                                "label": "Description",
+                                "placeholder": "Enter description"
+                            },
+                            {
+                                "name": "type",
+                                "type": "udttype",
+                                "label": "Type",
+                                "required": true
+                            }
+                        ],
+                        "type": "udtspec",
+                        "label": "Response structure",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            },
+            "tools": [
+                {
+                    "name": "Get Free/Busy Information",
+                    "description": "Returns free/busy information of the Google Calendar of the user",
+                    "flow": [
+                        {
+                            "id": 5,
+                            "module": "google-calendar:getFreeBusyInformation",
+                            "version": 5,
+                            "parameters": {
+                                "__IMTCONN__": 7800852
+                            },
+                            "mapper": {
+                                "item": [
+                                    {
+                                        "id": "roger@go9x.com"
+                                    }
+                                ],
+                                "timeMax": "{{addDays(parseDate(now; \"X\"); 7)}}",
+                                "timeMin": "{{parseDate(now; \"X\")}}"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 250
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "item": {
+                                            "mode": "chose",
+                                            "items": [
+                                                {
+                                                    "id": {
+                                                        "mode": "chose",
+                                                        "label": "roger@go9x.com (Primary Calendar)"
+                                                    }
+                                                }
+                                            ]
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google"
+                                            },
+                                            "label": "My Google connection (farhanhomeschooling519@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "timeMin",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Time Range From",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "timeMax",
+                                        "time": true,
+                                        "type": "date",
+                                        "label": "Time Range To",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "item",
+                                        "spec": [
+                                            {
+                                                "mode": "edit",
+                                                "name": "id",
+                                                "type": "select",
+                                                "label": "Calendar ID",
+                                                "dynamic": true,
+                                                "options": [],
+                                                "required": true
+                                            }
+                                        ],
+                                        "type": "array",
+                                        "label": "Calendars",
+                                        "required": true
+                                    }
+                                ],
+                                "interface": [
+                                    {
+                                        "name": "result",
+                                        "spec": {
+                                            "spec": [
+                                                {
+                                                    "name": "start",
+                                                    "type": "date",
+                                                    "label": "Start"
+                                                },
+                                                {
+                                                    "name": "end",
+                                                    "type": "date",
+                                                    "label": "End"
+                                                }
+                                            ],
+                                            "type": "collection"
+                                        },
+                                        "type": "array",
+                                        "label": "Result"
+                                    },
+                                    {
+                                        "name": "kind",
+                                        "type": "text",
+                                        "label": "Kind"
+                                    },
+                                    {
+                                        "name": "timeMin",
+                                        "type": "date",
+                                        "label": "Time Range From"
+                                    },
+                                    {
+                                        "name": "timeMax",
+                                        "type": "date",
+                                        "label": "Time Range To"
+                                    },
+                                    {
+                                        "name": "calendars",
+                                        "spec": [
+                                            {
+                                                "name": "roger@go9x.com",
+                                                "spec": [
+                                                    {
+                                                        "name": "busy",
+                                                        "spec": [
+                                                            {
+                                                                "name": "start",
+                                                                "type": "date",
+                                                                "label": "Start"
+                                                            },
+                                                            {
+                                                                "name": "end",
+                                                                "type": "date",
+                                                                "label": "End"
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Busy"
+                                                    },
+                                                    {
+                                                        "name": "errors",
+                                                        "spec": [
+                                                            {
+                                                                "name": "domain",
+                                                                "type": "date",
+                                                                "label": "Domain"
+                                                            },
+                                                            {
+                                                                "name": "reason",
+                                                                "type": "date",
+                                                                "label": "Reason"
+                                                            }
+                                                        ],
+                                                        "type": "array",
+                                                        "label": "Errors"
+                                                    }
+                                                ],
+                                                "type": "collection",
+                                                "label": "roger@go9x.com"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "Calendars"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Create a draft email",
+                    "description": "Creates a new draft email to contact the Lead with an answer to their previous mail",
+                    "flow": [
+                        {
+                            "id": 4,
+                            "module": "google-email:createADraft",
+                            "version": 4,
+                            "parameters": {
+                                "__IMTCONN__": 7801086
+                            },
+                            "mapper": {
+                                "to": "{{2.to}}",
+                                "content": "{{2.content}}",
+                                "subject": "{{2.subject}}",
+                                "bodyType": "rawHtml"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 450
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "cc": {
+                                            "mode": "chose"
+                                        },
+                                        "to": {
+                                            "mode": "edit",
+                                            "extra": {
+                                                "aiHelp": "Enter a recipient email address."
+                                            },
+                                            "items": [
+                                                null
+                                            ]
+                                        },
+                                        "bcc": {
+                                            "mode": "chose"
+                                        },
+                                        "from": {
+                                            "mode": "chose"
+                                        },
+                                        "content": {
+                                            "extra": {
+                                                "aiHelp": "You can use complete HTML code."
+                                            }
+                                        },
+                                        "folders": {
+                                            "mode": "chose"
+                                        },
+                                        "bodyType": {
+                                            "label": "Raw HTML"
+                                        },
+                                        "attachments": {
+                                            "mode": "chose"
+                                        },
+                                        "emailHeaders": {
+                                            "mode": "chose"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "__IMTCONN__": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "google-email"
+                                            },
+                                            "label": "My Gmail connection (farhanhomeschooling519@gmail.com)"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "__IMTCONN__",
+                                        "type": "account:google-email",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "from",
+                                        "type": "select",
+                                        "label": "From"
+                                    },
+                                    {
+                                        "name": "to",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address",
+                                            "required": true
+                                        },
+                                        "type": "array",
+                                        "label": "To",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "emailHeaders",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "key",
+                                                    "type": "text",
+                                                    "label": "Key",
+                                                    "required": true
+                                                },
+                                                {
+                                                    "name": "value",
+                                                    "type": "text",
+                                                    "label": "Value"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Email header"
+                                        },
+                                        "type": "array",
+                                        "label": "Additional email headers"
+                                    },
+                                    {
+                                        "name": "subject",
+                                        "type": "text",
+                                        "label": "Subject"
+                                    },
+                                    {
+                                        "name": "bodyType",
+                                        "type": "select",
+                                        "label": "Body type",
+                                        "required": true,
+                                        "validate": {
+                                            "enum": [
+                                                "rawHtml",
+                                                "collection"
+                                            ]
+                                        }
+                                    },
+                                    {
+                                        "name": "attachments",
+                                        "spec": {
+                                            "name": "value",
+                                            "spec": [
+                                                {
+                                                    "name": "filename",
+                                                    "type": "filename",
+                                                    "label": "File name",
+                                                    "required": true,
+                                                    "semantic": "file:name"
+                                                },
+                                                {
+                                                    "name": "data",
+                                                    "type": "buffer",
+                                                    "label": "Data",
+                                                    "required": true,
+                                                    "semantic": "file:data"
+                                                }
+                                            ],
+                                            "type": "collection",
+                                            "label": "Attachment"
+                                        },
+                                        "type": "array",
+                                        "label": "Attachments"
+                                    },
+                                    {
+                                        "name": "cc",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address"
+                                        },
+                                        "type": "array",
+                                        "label": "CC recipients"
+                                    },
+                                    {
+                                        "name": "bcc",
+                                        "spec": {
+                                            "name": "value",
+                                            "type": "email",
+                                            "label": "Recipient email address"
+                                        },
+                                        "type": "array",
+                                        "label": "BCC recipients"
+                                    },
+                                    {
+                                        "name": "threadId",
+                                        "type": "text",
+                                        "label": "Thread ID"
+                                    },
+                                    {
+                                        "name": "folders",
+                                        "type": "select",
+                                        "label": "Folders",
+                                        "multiple": true
+                                    },
+                                    {
+                                        "name": "content",
+                                        "type": "text",
+                                        "label": "Content"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Research Lead information",
+                    "description": "Searches the web for information about the lead",
+                    "flow": [
+                        {
+                            "id": 3,
+                            "module": "make-ai-web-search:generateAResponse",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "input": "Research the company associated with the domain for the mail \"{{1.fromEmail}}\"\n\nGather comprehensive lead qualification information including:\n\nCOMPANY BASICS\n- Official company name\n- Industry and sector\n- Company size (number of employees, revenue if available)\n- Headquarters location\n- Website and online presence\n\nBUSINESS INTELLIGENCE\n- Core products or services offered\n- Business model (B2B, B2C, SaaS, etc.)\n- Target market and customer base\n- Key differentiators or unique value propositions\n\nRECENT ACTIVITY\n- Recent news, press releases, or announcements from the last 6 months\n- Funding rounds, acquisitions, or partnerships\n- Product launches or major updates\n- Leadership changes or company milestones\n\nSIGNALS AND INDICATORS\n- Growth signals (hiring, expansion, new offices)\n- Technology stack or tools they use (if discoverable)\n- Pain points or challenges mentioned in recent content\n- Budget indicators or financial health signals\n\nCOMPETITIVE CONTEXT\n- Main competitors in their space\n- Market position or reputation\n- Any awards, recognition, or notable achievements\n\nFocus on recent and relevant information that would help qualify this lead and personalize outreach. Prioritize facts over speculation.",
+                                "parseJson": false,
+                                "user_location": {
+                                    "type": "approximate"
+                                }
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 650
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "parseJson": {
+                                            "mode": "chose"
+                                        },
+                                        "user_location": {
+                                            "nested": {
+                                                "country": {
+                                                    "mode": "chose"
+                                                },
+                                                "timezone": {
+                                                    "mode": "chose",
+                                                    "label": "Empty"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "expect": [
+                                    {
+                                        "name": "input",
+                                        "type": "text",
+                                        "label": "Text",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "parseJson",
+                                        "type": "boolean",
+                                        "label": "Parse JSON in response",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "user_location",
+                                        "spec": [
+                                            {
+                                                "name": "type",
+                                                "type": "hidden"
+                                            },
+                                            {
+                                                "name": "city",
+                                                "type": "text",
+                                                "label": "City"
+                                            },
+                                            {
+                                                "name": "country",
+                                                "type": "select",
+                                                "label": "Country"
+                                            },
+                                            {
+                                                "name": "region",
+                                                "type": "text",
+                                                "label": "Region"
+                                            },
+                                            {
+                                                "name": "timezone",
+                                                "type": "select",
+                                                "label": "Timezone"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "User Location"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "Generate a response",
+                    "description": "Generates a response from web search. Can also access specific URLs.",
+                    "flow": [
+                        {
+                            "id": 8,
+                            "module": "make-ai-web-search:generateAResponse",
+                            "version": 1,
+                            "parameters": {},
+                            "mapper": {
+                                "input": "{{2.input}}",
+                                "parseJson": false,
+                                "user_location": {
+                                    "type": "approximate"
+                                }
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 850
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "input": {
+                                            "extra": {
+                                                "aiHelp": "Enter your search query. For detailed guidance, visit our [Help Center](https://apps.make.com/make-ai-web-search). You can also include specific instructions for the AI to format output as JSON. In that case, make sure to enable the advanced __Parse JSON in response__ option below."
+                                            }
+                                        },
+                                        "parseJson": {
+                                            "mode": "chose"
+                                        },
+                                        "user_location": {
+                                            "nested": {
+                                                "country": {
+                                                    "mode": "chose",
+                                                    "label": "Empty"
+                                                },
+                                                "timezone": {
+                                                    "mode": "chose",
+                                                    "label": "Empty"
+                                                }
+                                            }
+                                        }
+                                    }
+                                },
+                                "expect": [
+                                    {
+                                        "name": "input",
+                                        "type": "text",
+                                        "label": "Text",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "parseJson",
+                                        "type": "boolean",
+                                        "label": "Parse JSON in response",
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "user_location",
+                                        "spec": [
+                                            {
+                                                "name": "type",
+                                                "type": "hidden"
+                                            },
+                                            {
+                                                "name": "city",
+                                                "type": "text",
+                                                "label": "City"
+                                            },
+                                            {
+                                                "name": "country",
+                                                "type": "select",
+                                                "label": "Country"
+                                            },
+                                            {
+                                                "name": "region",
+                                                "type": "text",
+                                                "label": "Region"
+                                            },
+                                            {
+                                                "name": "timezone",
+                                                "type": "select",
+                                                "label": "Timezone"
+                                            }
+                                        ],
+                                        "type": "collection",
+                                        "label": "User Location"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                },
+                {
+                    "name": "mcp.vlei.wiki Tools",
+                    "description": "Makes selected MCP tools available to the agent. The agent can call any of the selected tools by name.",
+                    "flow": [
+                        {
+                            "id": 14,
+                            "module": "mcp-client:McpToolsForAgent",
+                            "version": 1,
+                            "parameters": {
+                                "account": 7802026
+                            },
+                            "mapper": {
+                                "tools": "keri_gleif_context,keri_search,keri_explain,keri_get_document,keri_find_related,keri_concepts_graph"
+                            },
+                            "metadata": {
+                                "designer": {
+                                    "x": 600,
+                                    "y": 1050
+                                },
+                                "restore": {
+                                    "expect": {
+                                        "tools": {
+                                            "mode": "edit"
+                                        }
+                                    },
+                                    "parameters": {
+                                        "account": {
+                                            "data": {
+                                                "scoped": "true",
+                                                "connection": "mcp"
+                                            },
+                                            "label": "My MCP connection (mcp.vlei.wiki [Token] [http])"
+                                        }
+                                    }
+                                },
+                                "parameters": [
+                                    {
+                                        "name": "account",
+                                        "type": "account:mcp",
+                                        "label": "Connection",
+                                        "required": true
+                                    }
+                                ],
+                                "expect": [
+                                    {
+                                        "name": "tools",
+                                        "type": "select",
+                                        "label": "Tools",
+                                        "multiple": true,
+                                        "required": true
+                                    },
+                                    {
+                                        "name": "toolName",
+                                        "type": "hidden",
+                                        "label": "Tool Name"
+                                    },
+                                    {
+                                        "name": "arguments",
+                                        "type": "hidden",
+                                        "label": "Arguments"
+                                    }
+                                ]
+                            }
+                        }
+                    ]
+                }
+            ]
+        },
+        {
+            "id": 7,
+            "module": "slack:CreateMessage",
+            "version": 4,
+            "parameters": {
+                "__IMTCONN__": 7801225
+            },
+            "mapper": {
+                "text": "*New Lead draft mail from {{1.fromEmail}}*\n🔗  <https://mail.google.com/mail/u/0/#drafts?compose={{2.jsonResponse.draft_mail_id}}|View drafted answer>",
+                "parse": false,
+                "idType": "channel",
+                "mrkdwn": true,
+                "channel": "D0721HF4T9B",
+                "channelType": "im",
+                "channelWType": "list",
+                "unfurl_links": false,
+                "unfurl_media": false
+            },
+            "metadata": {
+                "designer": {
+                    "x": 600,
+                    "y": 0
+                },
+                "restore": {
+                    "expect": {
+                        "parse": {
+                            "mode": "chose"
+                        },
+                        "idType": {
+                            "mode": "chose",
+                            "label": "Channel ID"
+                        },
+                        "mrkdwn": {
+                            "mode": "chose"
+                        },
+                        "channel": {
+                            "mode": "chose",
+                            "label": "roger"
+                        },
+                        "link_names": {
+                            "mode": "chose"
+                        },
+                        "channelType": {
+                            "label": "Direct message"
+                        },
+                        "channelWType": {
+                            "label": "Select from the list"
+                        },
+                        "unfurl_links": {
+                            "mode": "chose"
+                        },
+                        "unfurl_media": {
+                            "mode": "chose"
+                        },
+                        "reply_broadcast": {
+                            "mode": "chose"
+                        }
+                    },
+                    "parameters": {
+                        "__IMTCONN__": {
+                            "data": {
+                                "scoped": "true",
+                                "connection": "slack3"
+                            },
+                            "label": "My Slack (bot) connection"
+                        }
+                    }
+                },
+                "parameters": [
+                    {
+                        "name": "__IMTCONN__",
+                        "type": "account:slack2,slack3",
+                        "label": "Connection",
+                        "required": true
+                    }
+                ],
+                "expect": [
+                    {
+                        "name": "channelWType",
+                        "type": "select",
+                        "label": "Enter a channel ID or name",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "manualy",
+                                "list"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "text",
+                        "type": "text",
+                        "label": "Text"
+                    },
+                    {
+                        "name": "blocks",
+                        "type": "text",
+                        "label": "Blocks"
+                    },
+                    {
+                        "name": "thread_ts",
+                        "type": "text",
+                        "label": "Thread message ID (time stamp)"
+                    },
+                    {
+                        "name": "reply_broadcast",
+                        "type": "boolean",
+                        "label": "Reply broadcast"
+                    },
+                    {
+                        "name": "link_names",
+                        "type": "boolean",
+                        "label": "Link names"
+                    },
+                    {
+                        "name": "parse",
+                        "type": "boolean",
+                        "label": "Parse message text"
+                    },
+                    {
+                        "name": "mrkdwn",
+                        "type": "boolean",
+                        "label": "Use markdown"
+                    },
+                    {
+                        "name": "unfurl_links",
+                        "type": "boolean",
+                        "label": "Unfurl primarily text-based content"
+                    },
+                    {
+                        "name": "unfurl_media",
+                        "type": "boolean",
+                        "label": "Unfurl media content"
+                    },
+                    {
+                        "name": "icon_emoji",
+                        "type": "text",
+                        "label": "Icon emoji"
+                    },
+                    {
+                        "name": "icon_url",
+                        "type": "url",
+                        "label": "Icon url"
+                    },
+                    {
+                        "name": "username",
+                        "type": "text",
+                        "label": "User name"
+                    },
+                    {
+                        "name": "channelType",
+                        "type": "select",
+                        "label": "Channel type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "public",
+                                "private",
+                                "im",
+                                "mpim"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "idType",
+                        "type": "select",
+                        "label": "ID type",
+                        "required": true,
+                        "validate": {
+                            "enum": [
+                                "channel",
+                                "user",
+                                "username"
+                            ]
+                        }
+                    },
+                    {
+                        "name": "channel",
+                        "type": "select",
+                        "label": "User (Channel ID)",
+                        "required": true
+                    }
+                ],
+                "advanced": true
+            }
+        }
+    ],
+    "metadata": {
+        "instant": false,
+        "version": 1,
+        "scenario": {
+            "roundtrips": 1,
+            "maxErrors": 3,
+            "autoCommit": true,
+            "autoCommitTriggerLast": true,
+            "sequential": false,
+            "slots": null,
+            "confidential": false,
+            "dataloss": false,
+            "dlq": false,
+            "freshVariables": false
+        },
+        "designer": {
+            "orphans": []
+        },
+        "zone": "eu1.make.com",
+        "notes": [
+            {
+                "moduleIds": [
+                    1
+                ],
+                "content": "<p>This module watches emails marked with the label \"Leads\".</p><p>The limit marks how many emails should be processed per scenario run. It should be planned together with the scheduling of the scenario.</p>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    7
+                ],
+                "content": "<p>In order to get the draft mail id, which is used to form the URL to the draft, the Agent's <em>Output structure</em> is set accordingly</p>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    5
+                ],
+                "content": "<p>The range of days can be modified by changing the days added to the field <em>Time Range to</em></p>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            },
+            {
+                "moduleIds": [
+                    2
+                ],
+                "content": "<p>For best practices on using conversation IDs, cost savings, managing knowledge files, protecting your agent from common vulnerabilities and more, check out our <a href=\"https://academy.make.com/bundles/automation-to-ai-agents-advanced-builder\" target=\"_blank\">AI Agents course</a>.</p>",
+                "isFilterNote": false,
+                "metadata": {
+                    "color": "#9138FE"
+                }
+            }
+        ]
+    }
+}
